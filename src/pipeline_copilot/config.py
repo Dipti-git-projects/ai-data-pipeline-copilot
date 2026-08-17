@@ -1,5 +1,16 @@
-import os
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-def get_environment() -> str:
-    return os.getenv("APP_ENV", "development")
+class Settings(BaseSettings):
+    app_name: str = "AI Data Pipeline Copilot"
+    environment: str = "development"
+    log_level: str = "INFO"
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+
+settings = Settings()

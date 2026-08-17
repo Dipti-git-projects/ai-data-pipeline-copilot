@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/ai_data_pipeline_copilot.egg-info/PKG-INFO
+src/ai_data_pipeline_copilot.egg-info/SOURCES.txt
+src/ai_data_pipeline_copilot.egg-info/dependency_links.txt
+src/ai_data_pipeline_copilot.egg-info/top_level.txt
+src/pipeline_copilot/__init__.py
+src/pipeline_copilot/config.py
+src/pipeline_copilot/main.py
+tests/test_config.py
