@@ -1,5 +1,8 @@
 from pipeline_copilot.db.connection import get_connection
-from pipeline_copilot.models import PipelineInvestigationRequest
+from pipeline_copilot.models import (
+    PipelineInvestigationRequest,
+    PipelineRun,
+)
 
 
 class PipelineRunRepository:
@@ -7,7 +10,7 @@ class PipelineRunRepository:
     def find_runs_by_pipeline(
         self,
         request: PipelineInvestigationRequest,
-    ) -> list[dict]:
+    ) -> list[PipelineRun]:
 
         connection = get_connection()
 
@@ -29,11 +32,19 @@ class PipelineRunRepository:
                 (request.pipeline_name,),
             )
 
-            columns = [column[0] for column in cursor.description]
+            rows = cursor.fetchall()
 
             return [
-                dict(zip(columns, row))
-                for row in cursor.fetchall()
+                PipelineRun(
+                    run_id=row[0],
+                    pipeline_name=row[1],
+                    start_time=row[2],
+                    end_time=row[3],
+                    status=row[4],
+                    error_message=row[5],
+                    records_processed=row[6],
+                )
+                for row in rows
             ]
 
         finally:
