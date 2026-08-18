@@ -1,21 +1,44 @@
-from pipeline_copilot.models import KnowledgeDocument
 from pipeline_copilot.rag.chunker import DocumentChunker
 
 
-def test_document_is_chunked():
+def test_chunker_preserves_section_metadata():
 
-    document = KnowledgeDocument(
-        document_id="test",
-        title="Test Document",
-        content="A" * 1200,
-        source="test.md",
-    )
+    content = """
+# Snowflake Connection Troubleshooting
 
-    chunker = DocumentChunker()
+## Common Causes
 
-    chunks = chunker.chunk_document(
-        document,
+Network connectivity problems can cause
+Snowflake connection failures.
+
+## Recovery
+
+Retry the pipeline after confirming
+the connection is available.
+"""
+
+    chunker = DocumentChunker(
         chunk_size=500,
+        overlap=50,
     )
 
-    assert len(chunks) == 3
+    chunks = chunker.chunk(
+        document_id="snowflake-runbook",
+        content=content,
+        metadata={
+            "source": "snowflake_connection.md",
+            "document_type": "runbook",
+        },
+    )
+
+    assert len(chunks) > 0
+
+    assert chunks[0].metadata["source"] == (
+        "snowflake_connection.md"
+    )
+
+    assert chunks[0].metadata["document_type"] == (
+        "runbook"
+    )
+
+    assert "section" in chunks[0].metadata

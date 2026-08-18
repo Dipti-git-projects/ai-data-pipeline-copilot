@@ -2,7 +2,8 @@ from datetime import datetime
 from enum import Enum
 
 from pydantic import BaseModel, Field
-
+from dataclasses import dataclass, field
+from typing import Any
 
 class PipelineStatus(str, Enum):
     SUCCESS = "SUCCESS"
@@ -35,8 +36,21 @@ class KnowledgeDocument(BaseModel):
     content: str
     source: str
 
-class DocumentChunk(BaseModel):
+# class DocumentChunk(BaseModel):
+#     chunk_id: str
+#     document_id: str
+#     content: str
+#     metadata: dict[str, str]
+
+@dataclass
+class DocumentChunk:
+
     chunk_id: str
+
     document_id: str
+
     content: str
-    metadata: dict[str, str]
+
+    metadata: dict[str, Any] = field(
+        default_factory=dict
+    )
