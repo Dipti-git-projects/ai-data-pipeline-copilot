@@ -28,3 +28,15 @@ class FailurePattern(BaseModel):
     error_message: str
     occurrence_count: int
     run_ids: list[str]
+
+class KnowledgeDocument(BaseModel):
+    document_id: str
+    title: str
+    content: str
+    source: str
+
+class DocumentChunk(BaseModel):
+    chunk_id: str
+    document_id: str
+    content: str
+    metadata: dict[str, str]
