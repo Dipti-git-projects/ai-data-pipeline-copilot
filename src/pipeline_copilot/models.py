@@ -23,3 +23,8 @@ class PipelineRun(BaseModel):
     status: PipelineStatus
     error_message: str | None = None
     records_processed: int | None = None
+
+class FailurePattern(BaseModel):
+    error_message: str
+    occurrence_count: int
+    run_ids: list[str]
